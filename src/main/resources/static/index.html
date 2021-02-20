@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>Test</title>
+</head>
+<body>
+<label for="exception_number">Номер ошибки</label>
+
+<input type="number" value="0" name="exception_number" id="exception_number">
+<button id="send">Отправить</button>
+<script>
+    $("#send").on('click', function () {
+        let exception_num = $("#exception_number").val()
+        let data = {"num": exception_num}
+        $.ajax({
+            url: "/exception",
+            type: "GET",
+            data: data,
+            success: function (data) {
+                console.log(data)
+            },
+            complete: function (xhr, textStatus) {
+                let status = xhr.status
+                if (status == 500) {
+                    alert("Ой 500 ошибочка")
+                } else if (status == 503) {
+                    alert("Ой 503 ошибочка")
+                } else if (status == 507) {
+                    alert("Ой 507 ошибочка")
+                }
+                console.log(xhr.status + " text = " + textStatus);
+            }
+        })
+    })
+</script>
+
+</body>
+</html>
